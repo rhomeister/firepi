@@ -4,7 +4,7 @@ from settings import *
 import RPi.GPIO as GPIO
 
 class Actuators:
-  OUTPUTS = [LED_RED, LED_GREEN, LED_BLUE, RELAY]
+  OUTPUTS = [LED_RED, LED_GREEN, LED_BLUE, RELAY, BUZZER]
 
   def __init__(self):
     GPIO.setmode(GPIO.BCM)
@@ -23,6 +23,9 @@ class Actuators:
 
   def set_relay(self, value):
     GPIO.output(RELAY, value)
+
+  def set_buzzer(self, value):
+    GPIO.output(BUZZER, value)
 
   def cleanup(self):
     GPIO.cleanup()
