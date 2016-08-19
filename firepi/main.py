@@ -3,27 +3,49 @@ from availability_api import AvailabilityAPI
 from availability_monitoring import AvailabilityMonitoring
 from incident_monitoring import IncidentMonitoring
 from actuators import Actuators
+from lcd import LCD
 from settings import *
 import time
 
-try:
-  availability_api = AvailabilityAPI(API_KEY)
-  actuators = Actuators()
-  availability_monitoring = AvailabilityMonitoring(actuators, availability_api)
-  availability_monitoring.daemon = True
-  availability_monitoring.start()
 
-  incident_monitoring = IncidentMonitoring(actuators)
-  incident_monitoring.daemon = True
-  incident_monitoring.start()
+class Main:
+  def __init__(self):
+    self.availability_api = AvailabilityAPI(API_KEY)
+    self.lcd = LCD()
+    self.actuators = Actuators()
 
-  while True:
-    time.sleep(1)
+  def start_availability_monitoring(self):
+    thread = AvailabilityMonitoring(self.actuators, 
+                                    self.availability_api)
+    thread.daemon = True
+    thread.start()
 
-  print "Good bye!"
-except KeyboardInterrupt:
-  print "  Quit"
+  def start_incident_monitoring(self):
+    thread = IncidentMonitoring(self.actuators, self.lcd)
+    thread.daemon = True
+    thread.start()
 
-  # Reset GPIO settings
-  actuators.cleanup()
+  def cleanup(self):
+    self.lcd.cleanup()
+    self.actuators.cleanup()
+
+
+def main():
+  main = Main()
+  try:
+    main.start_incident_monitoring()
+    main.start_availability_monitoring()
+
+    while True:
+      time.sleep(1)
+
+    print "Good bye!"
+  except KeyboardInterrupt:
+    print "  Quit"
+
+    # Reset GPIO settings
+    main.cleanup()
+
+if __name__ == '__main__':
+  main()
 
