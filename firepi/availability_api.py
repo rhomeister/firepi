@@ -8,11 +8,10 @@ class AvailabilityAPI:
   def __init__(self, token):
     self.token = token
     self.user_id = UserAPI(token).current()['id']
-    print self.user_id
 
   def is_available(self):
     template = '{}users/{}/schedule.json?auth_token={}'
-    url = template.format(ROOT_URL, self.user_id, self.token)
+    url = template.format(ROOT_API_URL, self.user_id, self.token)
     result = json.load(urllib2.urlopen(url))
 
     for membership in result:

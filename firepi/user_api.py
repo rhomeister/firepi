@@ -7,7 +7,5 @@ class UserAPI:
     self.token = token
 
   def current(self):
-    url = '{}users/current.json?auth_token={}'.format(ROOT_URL, self.token)
+    url = '{}users/current.json?auth_token={}'.format(ROOT_API_URL, self.token)
     return json.load(urllib2.urlopen(url))
-
-

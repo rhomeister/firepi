@@ -1,4 +1,13 @@
-ROOT_URL = 'https://www.fireservicerota.co.uk/api/'
+from setup import Setup
+
+s = Setup()
+settings = s.get_settings()
+
+DOMAIN = settings['domain']
+API_KEY = settings['api_key']
+
+ROOT_API_URL = DOMAIN + '/api/'
+
 LED_RED = 18
 LED_GREEN = 23
 LED_BLUE = 24
@@ -17,4 +26,3 @@ LCD_D5 = 13
 LCD_D6 = 19
 LCD_D7 = 26
 
-API_KEY='api_key'

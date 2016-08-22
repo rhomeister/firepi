@@ -14,7 +14,7 @@ class IncidentAPI:
 
   def fetch_incidents(self):
     url_template = '{}users/{}/incidents.json?auth_token={}&max_age={}'
-    url = url_template.format(ROOT_URL, self.user_id, self.token, 600)
+    url = url_template.format(ROOT_API_URL, self.user_id, self.token, 600)
     return json.load(urllib2.urlopen(url))
 
   def any_recent_incidents(self):
@@ -33,10 +33,8 @@ class IncidentAPI:
     for i in incidents:
       response_ids += [r['id'] for r in i['incident_responses'] if r['membership_id'] in self.membership_ids ] 
 
-    print response_ids
-
     for r in response_ids:
       url_template = '{}/incident_responses/{}.json?auth_token={}'
-      url = url_template.format(ROOT_URL, r, self.token)
+      url = url_template.format(ROOT_API_URL, r, self.token)
       requests.put(url, json = {'incident_response': {'status': 'acknowledged'}})
 
