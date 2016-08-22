@@ -67,6 +67,8 @@ class Setup:
       self.ask_password()
       self.api_key = self.get_api_key()
       if self.api_key:
+        print "Logged in"
+        print
         return
       else:
         print
